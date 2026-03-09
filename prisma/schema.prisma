@@ -1,0 +1,147 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+model Usuario {
+  id                 BigInt              @id @default(autoincrement())
+  nombre             String
+  correo             String              @unique
+  password           String
+  foto               String?
+  provincia          String?
+  tipo_usuario       String
+  auditorias         Auditoria[]
+  calificaciones     Calificacion[]
+  comentariosNegocio ComentarioNegocio[]
+  eventos            Evento[]
+  negocios           Negocio[]
+  publicaciones      Publicacion[]
+  reacciones         Reaccion[]
+  vehiculos          Vehiculo[]
+}
+
+model Vehiculo {
+  id            BigInt  @id @default(autoincrement())
+  marca         String
+  modelo        String
+  anio         Int
+  bateria       String
+  autonomia     Int
+  tipo_conector String
+  usuarioId     BigInt
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model Negocio {
+  id              BigInt              @id @default(autoincrement())
+  nombre_empresa  String
+  direccion       String
+  telefono        String
+  correo_contacto String
+  horario_general String
+  usuarioId       BigInt
+  calificaciones  Calificacion[]
+  cargadores      Cargador[]
+  comentarios     ComentarioNegocio[]
+  usuario         Usuario             @relation(fields: [usuarioId], references: [id])
+  promociones     Promocion[]
+}
+
+model Cargador {
+  id                 BigInt  @id @default(autoincrement())
+  tipo_conector      String
+  potencia           Int
+  horario_especifico String
+  negocioId          BigInt
+  negocio            Negocio @relation(fields: [negocioId], references: [id])
+}
+
+model Calificacion {
+  id        BigInt  @id @default(autoincrement())
+  estrellas Int
+  usuarioId BigInt
+  negocioId BigInt
+  negocio   Negocio @relation(fields: [negocioId], references: [id])
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model ComentarioNegocio {
+  id        BigInt  @id @default(autoincrement())
+  contenido String
+  usuarioId BigInt
+  negocioId BigInt
+  negocio   Negocio @relation(fields: [negocioId], references: [id])
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model Promocion {
+  id          BigInt  @id @default(autoincrement())
+  descripcion String
+  vigencia    String
+  negocioId   BigInt
+  negocio     Negocio @relation(fields: [negocioId], references: [id])
+}
+
+model Publicacion {
+  id             BigInt     @id @default(autoincrement())
+  titulo         String
+  contenido      String
+  fecha_creacion DateTime   @default(now())
+  autorId        BigInt
+  autor          Usuario    @relation(fields: [autorId], references: [id])
+  reacciones     Reaccion[]
+}
+
+model Reaccion {
+  id            BigInt      @id @default(autoincrement())
+  tipo          String
+  usuarioId     BigInt
+  publicacionId BigInt
+  publicacion   Publicacion @relation(fields: [publicacionId], references: [id])
+  usuario       Usuario     @relation(fields: [usuarioId], references: [id])
+}
+
+model Evento {
+  id            BigInt   @id @default(autoincrement())
+  titulo        String
+  descripcion   String
+  fecha         DateTime
+  tipo_evento   String
+  organizadorId BigInt
+  organizador   Usuario  @relation(fields: [organizadorId], references: [id])
+}
+
+model Normativa {
+  id          BigInt @id @default(autoincrement())
+  tipo        String
+  descripcion String
+  enlace      String
+}
+
+model Certificacion {
+  id            BigInt   @id @default(autoincrement())
+  nombre        String
+  descripcion   String
+  fecha_emision DateTime
+}
+
+model Auditoria {
+  id        BigInt   @id @default(autoincrement())
+  accion    String
+  usuarioId BigInt
+  fecha     DateTime @default(now())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Respaldo {
+  id        BigInt   @id @default(autoincrement())
+  fecha     DateTime @default(now())
+  ubicacion String
+}
