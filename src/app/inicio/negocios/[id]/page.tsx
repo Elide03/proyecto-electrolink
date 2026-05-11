@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import Image from "next/image";
 
 export default async function NegocioDetailPage({
   params,
@@ -8,6 +7,7 @@ export default async function NegocioDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
+  console.log("📌 params recibido:", resolvedParams);
 
   try {
     const negocio = await prisma.negocio.findUnique({
@@ -20,26 +20,15 @@ export default async function NegocioDetailPage({
     }
 
     return (
-      <main className="min-h-screen bg-gradient-to-br from-[#0a192f] via-[#1b2a49] to-[#2e1a47] flex items-center justify-center p-10 text-gray-200 font-[Poppins]">
-        <div className="bg-[#121826]/80 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700 p-10 max-w-3xl w-full transition transform hover:-translate-y-1 hover:scale-[1.02]">
-          {/* Imagen fija o placeholder */}
-          <div className="w-full h-64 mb-6 rounded-xl overflow-hidden border border-gray-700">
-            <Image
-              src="/images/no-image.png" // siempre usa el placeholder
-              alt="Foto no disponible"
-              width={800}
-              height={400}
-              className="object-cover w-full h-full"
-            />
-          </div>
-
+      <main className="min-h-screen bg-gradient-to-br from-[#0a192f] via-[#1b2a49] to-[#2e1a47] flex items-center justify-center p-8 text-gray-200 font-[Poppins]">
+        <div className="bg-[#121826]/80 backdrop-blur-md rounded-xl shadow-lg border border-gray-700 p-8 max-w-lg w-full transition transform hover:-translate-y-1 hover:scale-[1.02]">
           {/* Nombre del negocio */}
-          <h1 className="text-4xl font-bold text-green-400 mb-3">
+          <h1 className="text-3xl font-bold text-green-400 mb-2">
             {negocio.nombre_empresa}
           </h1>
 
           {/* Dirección */}
-          <p className="text-sm text-gray-400 mb-2">{negocio.direccion}</p>
+          <p className="text-sm text-gray-400 mb-1">{negocio.direccion}</p>
 
           {/* Teléfono */}
           <p className="text-gray-300">📞 {negocio.telefono}</p>
@@ -52,13 +41,13 @@ export default async function NegocioDetailPage({
 
           {/* Resumen opcional: cantidad de cargadores */}
           {negocio.cargadores.length > 0 && (
-            <p className="mt-4 text-sm text-gray-400 italic">
+            <p className="mt-3 text-sm text-gray-400 italic">
               {negocio.cargadores.length} cargador(es) disponibles
             </p>
           )}
 
           {/* Botón volver */}
-          <div className="mt-8 text-right">
+          <div className="mt-6 text-right">
             <Link
               href="/inicio/negocios"
               className="text-blue-400 hover:text-green-400 underline transition"

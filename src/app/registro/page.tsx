@@ -10,7 +10,7 @@ export default function RegistroPage() {
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const [provincia, setProvincia] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false); // 👈 nuevo estado
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleRegistro = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,34 +23,31 @@ export default function RegistroPage() {
         correo,
         password,
         provincia,
-        tipo_usuario: isAdmin ? "administrador" : "conductor", // 👈 aquí decides
+        tipo_usuario: isAdmin ? "administrador" : "conductor",
       }),
     });
 
     if (res.ok) {
       const data = await res.json();
-      // Guardamos el nombre en localStorage para simular sesión
       localStorage.setItem("usuario", data.nombre);
-      router.push("/inicio"); // redirige a la página principal
+      router.push("/inicio");
     } else {
       const error = await res.json();
-      alert(error.error); // muestra cartel si la contraseña < 10 o correo duplicado
+      alert(error.error);
     }
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-green-50 flex items-center justify-center p-6 text-gray-800">
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md border border-gray-200">
-        <h1 className="text-2xl font-bold text-blue-800 mb-6 text-center">
-          Crear cuenta
+    <main className="min-h-screen bg-gradient-to-br from-[#0a192f] via-[#1b2a49] to-[#2e1a47] flex items-center justify-center p-6 text-gray-200 font-[Poppins]">
+      <div className="bg-[#121826]/80 backdrop-blur-md rounded-2xl shadow-2xl p-10 w-full max-w-md border border-gray-700">
+        <h1 className="text-3xl font-extrabold text-center mb-8">
+          <span className="text-green-400">Crear</span>{" "}
+          <span className="text-blue-400">cuenta</span>
         </h1>
 
         <form onSubmit={handleRegistro} className="space-y-6">
           <div>
-            <label
-              htmlFor="nombre"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="nombre" className="block text-sm text-gray-300">
               Nombre
             </label>
             <input
@@ -59,16 +56,13 @@ export default function RegistroPage() {
               required
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 text-gray-900"
+              className="mt-1 w-full rounded-md bg-[#1b2a49] border border-gray-600 text-gray-100 placeholder-gray-400 focus:ring-green-400 focus:border-green-400"
               placeholder="Tu nombre"
             />
           </div>
 
           <div>
-            <label
-              htmlFor="correo"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="correo" className="block text-sm text-gray-300">
               Correo electrónico
             </label>
             <input
@@ -77,16 +71,13 @@ export default function RegistroPage() {
               required
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 text-gray-900"
+              className="mt-1 w-full rounded-md bg-[#1b2a49] border border-gray-600 text-gray-100 placeholder-gray-400 focus:ring-green-400 focus:border-green-400"
               placeholder="tucorreo@electrolink.cu"
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm text-gray-300">
               Contraseña
             </label>
             <input
@@ -95,16 +86,13 @@ export default function RegistroPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 text-gray-900"
+              className="mt-1 w-full rounded-md bg-[#1b2a49] border border-gray-600 text-gray-100 placeholder-gray-400 focus:ring-green-400 focus:border-green-400"
               placeholder="••••••••••"
             />
           </div>
 
           <div>
-            <label
-              htmlFor="provincia"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="provincia" className="block text-sm text-gray-300">
               Provincia
             </label>
             <input
@@ -112,25 +100,24 @@ export default function RegistroPage() {
               id="provincia"
               value={provincia}
               onChange={(e) => setProvincia(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500 text-gray-900"
+              className="mt-1 w-full rounded-md bg-[#1b2a49] border border-gray-600 text-gray-100 placeholder-gray-400 focus:ring-green-400 focus:border-green-400"
               placeholder="Ej: La Habana"
             />
           </div>
 
-          {/* ✅ Checkbox para administrador */}
-          <label className="flex items-center space-x-2 text-sm text-gray-700">
+          <label className="flex items-center space-x-2 text-sm text-gray-300">
             <input
               type="checkbox"
               checked={isAdmin}
               onChange={(e) => setIsAdmin(e.target.checked)}
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-500 border-gray-500 rounded focus:ring-blue-400"
             />
             <span>Registrar como administrador</span>
           </label>
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+            className="w-full py-2 px-4 bg-gradient-to-r from-blue-600 to-green-500 text-white font-semibold rounded-md hover:scale-105 hover:shadow-lg hover:shadow-green-500/40 transition"
           >
             Registrarse
           </button>
@@ -139,7 +126,7 @@ export default function RegistroPage() {
         <div className="mt-6 text-center">
           <Link
             href="/login"
-            className="text-sm text-green-600 hover:underline"
+            className="text-sm text-green-400 hover:text-blue-400 transition"
           >
             ¿Ya tienes cuenta? Inicia sesión
           </Link>
